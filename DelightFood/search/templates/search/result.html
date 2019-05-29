@@ -1,0 +1,34 @@
+<!-- 레이아웃을 받아옵니다. -->
+{% extends "layout/layout.html" %}
+
+{% block title %} 
+검색창입니다.
+{% endblock %}
+
+{% block content %}
+
+    <!-- 에러메시지를 출력합니다. -->
+    {% if errorMsg %}
+    <div class="alert alert-{{erroType}}" role="alert">
+        {{ errorMsg }}
+    </div>
+    {% endif %}
+
+    <!-- 검색바입니다. -->
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+    <!-- 결과창입니다. -->
+    <div class="jumbotron">
+        <h1 class="display-4">Hello, world!</h1>
+        <p class="lead">This is a simple hero unit, a simple jumbotron-style component
+            for calling extra attention to featured content or information.</p>
+        <hr class="my-4">
+        <p>It uses utility classes for typography and spacing to space content out
+            within the larger container.</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+{% endblock %}
