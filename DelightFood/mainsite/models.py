@@ -142,7 +142,7 @@ class Favourite(models.Model):
 
 
 class FoodType(models.Model):
-    food_type = models.CharField(primary_key=True, max_length=20)
+    food_type = models.CharField(primary_key=True, max_length=50)
 
     class Meta:
         managed = True
