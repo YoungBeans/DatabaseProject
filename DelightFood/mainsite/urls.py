@@ -1,4 +1,4 @@
-"""DelightFood URL Configuration
+"""team URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -13,10 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib import admin
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('', views.main, name='home'),
     path('register/', views.register, name='register'),
+    path('regist/', views.register_fuc, name='register_fuc'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
 ]

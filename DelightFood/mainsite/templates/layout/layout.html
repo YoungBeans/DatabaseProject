@@ -41,10 +41,16 @@
                             <a class="nav-link" href="{% url 'home' %}">Home
                                 <span class="sr-only">(current)</span></a>
                         </li>
+                        {% if not request.session.member_id %} <!-- login 성공시 숨김 -->
                         <!-- 회원가입으로 이동! -->
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'register' %}">회원가입</a>
                         </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">LOGOUT</a>
+                        </li>
+                        {% endif %}
                         <!-- 지역별검색 -->
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'search' %}">상세검색</a>
@@ -52,7 +58,7 @@
                     </ul>
                 </div>
             </nav>
-
+            
             <!-- 검색칸을 넣을 공간입니다. -->
             {% block search %}{% endblock %}
 
