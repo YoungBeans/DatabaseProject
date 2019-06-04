@@ -23,4 +23,7 @@ urlpatterns = [
     path('regist/', views.register_fuc, name='register_fuc'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+    path('findpwd/', views.findpwd, name='find_pwd'),
+    path('findid/', views.findid, name='find_id'),
+    path('forgot/', views.forgot, name='forgot'),
 ]

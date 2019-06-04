@@ -1,0 +1,49 @@
+<!-- 레이아웃을 받아옵니다. -->
+{% extends "layout/layout.html" %}
+
+{% block title %} 
+검색창입니다.
+{% endblock %}
+
+{% block content %}
+
+<!-- 에러메시지를 출력합니다. -->
+{% if errorMsg %}
+<div class="alert alert-{{erroType}}" role="alert">
+    {{ errorMsg }}
+</div>
+{% endif %}
+
+<!-- 검색바입니다. -->
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline" action="{% url 'searching' %}">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <div class="custom-control custom-switch ml-2">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="option">
+            <label class="custom-control-label" for="customSwitch1">use option</label>
+        </div>
+        <select class="custom-select ml-2" id="select1" name="gu" defalut>
+            <option disabled selected>지역구 선택</option>
+            <option value="장안구">장안구</option>
+            <option value="권선구">권선구</option>
+            <option value="팔달구">팔달구</option>
+            <option value="영통구">영통구</option>
+        </select>
+        <select class="custom-select ml-2" name="resType">
+            <option disabled selected>업태 선택</option>
+            <option value="일식">일식</option>
+            <option value="양식">양식</option>
+            <option value="한식">한식</option>
+            <option value="중식">중식</option>
+            <option value="분식">분식</option>
+        </select>
+    </form>
+    <a href="{% url 'mostlook' %}"><h3><span class="badge badge-success">Most Look</span></h3></a>
+    <a href="{% url 'favouritelook' %}"><h3><span class="badge badge-success">favourite Look</span></h3></a>
+</nav>
+
+{% block searchContent %}
+{% endblock %}
+
+{% endblock %}

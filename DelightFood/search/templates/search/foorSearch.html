@@ -1,0 +1,10 @@
+<!-- 레이아웃을 받아옵니다. -->
+{% extends "search/layout.html" %}
+
+{% block searchContent %}
+<h1 class="mx-auto" style="width: 10em; margin-top:2em; font-size: 4rem">    
+{% for foodType in foodTypes %}
+    <a href="/search/foodSerched/{{foodType.food_type}}/"><span class="badge badge-success">{{foodType.food_type}}</span></a>
+{% endfor %}
+{% endblock %}
+</h1>

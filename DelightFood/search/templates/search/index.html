@@ -1,86 +1,44 @@
 <!-- 레이아웃을 받아옵니다. -->
-{% extends "layout/layout.html" %}
+{% extends "search/layout.html" %}
 
-{% block title %} 
-검색창입니다.
-{% endblock %}
+{% block searchContent %}
 
-{% block content %}
-
-    <!-- 에러메시지를 출력합니다. -->
-    {% if errorMsg %}
-    <div class="alert alert-{{erroType}}" role="alert">
-        {{ errorMsg }}
-    </div>
-    {% endif %}
-
-    <!-- 검색바입니다. -->
-    <nav class="navbar navbar-light bg-light">
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </nav>
     <!-- 결과창입니다. -->
     <table class="table">
     <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">식당이름</th>
+            <th scope="col">업태</th>
+            <th scope="col">조회수</th>
         </tr>
     </thead>
     <tbody>
+        {% for contact in contacts %}
         <tr>
-            <th scope="row">1</th>
-            <td><a href="{% url 'result' %}">Mark</a></td></a>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
+            <th scope="row">{{contact.restid}}</th>
+            <td><a href="/search/result/{{contact.restid}}/"><div>{{contact.name}}</div></a></td>
+            <td>{{contact.rtype_name.rtype_name}}</td>
+            <td>{{contact.cnt}}</td>
+        </tr>   
+        {% endfor %}
     </tbody>
 </table>
+<div class="pagination justify-content-center">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
 
-<table class="table">
-    <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
-    </tbody>
-</table>
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+            <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

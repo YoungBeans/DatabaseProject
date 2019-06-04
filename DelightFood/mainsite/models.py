@@ -133,7 +133,7 @@ class DjangoSession(models.Model):
 
 class Favourite(models.Model):
     favid = models.FloatField(primary_key=True)
-    userid = models.FloatField()
+    userid = models.ForeignKey('UserInfo', models.DO_NOTHING, db_column='userid')
     restid = models.ForeignKey('Restaurant', models.DO_NOTHING, db_column='restid')
 
     class Meta:
@@ -147,6 +147,8 @@ class FoodType(models.Model):
     class Meta:
         managed = True
         db_table = 'food_type'
+    def __str__(self): 
+        return self.food_type
 
 
 class FoodTypes(models.Model):
@@ -157,23 +159,27 @@ class FoodTypes(models.Model):
     class Meta:
         managed = True
         db_table = 'food_types'
+    def __str__(self): 
+        return self.menuid.name
 
 
 class Menu(models.Model):
     menuid = models.FloatField(primary_key=True)
-    restid = models.ForeignKey('Restaurant', models.DO_NOTHING, db_column='restid')
+    restid = models.FloatField()
     name = models.CharField(max_length=20, blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'menu'
+    def __str__(self): 
+        return self.name
 
 
 class Rate(models.Model):
     rateid = models.FloatField(primary_key=True)
     restid = models.ForeignKey('Restaurant', models.DO_NOTHING, db_column='restid', blank=True, null=True)
-    userid = models.FloatField(blank=True, null=True)
+    userid = models.ForeignKey('UserInfo', models.DO_NOTHING, db_column='userid', blank=True, null=True)
     rate = models.FloatField()
 
     class Meta:
@@ -187,29 +193,35 @@ class ResType(models.Model):
     class Meta:
         managed = True
         db_table = 'res_type'
-
+    def __str__(self): 
+        return self.rtype_name
 
 class Restaurant(models.Model):
     restid = models.FloatField(primary_key=True)
     rtype_name = models.ForeignKey(ResType, models.DO_NOTHING, db_column='rtype_name', blank=True, null=True)
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=20)
     tel = models.CharField(max_length=20)
     update_date = models.CharField(max_length=20)
     si = models.CharField(max_length=20)
     gu = models.CharField(max_length=20)
-    address = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
     cnt = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'restaurant'
+    def __str__(self): 
+        return self.name
 
 
 class UserInfo(models.Model):
-    userid = models.FloatField(primary_key=True)
+    userid = models.CharField(primary_key=True, max_length=30)
     email = models.CharField(max_length=20)
     tel = models.CharField(max_length=20)
+    pw = models.CharField(max_length=30)
 
     class Meta:
         managed = True
         db_table = 'user_info'
+    def __str__(self): 
+        return self.userid

@@ -55,7 +55,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'search' %}">상세검색</a>
                         </li>
+                        <!-- 음식타입별 검색 -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'foodSearch' %}">음식종류별검색</a>
+                        </li>
                     </ul>
+                    {% if request.session.member_id %} <!-- login 성공시 표출 -->
+                        {{request.session.member_id}}님 환영합니다.
+                    {% endif %}
                 </div>
             </nav>
             

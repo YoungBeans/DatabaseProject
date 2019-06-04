@@ -1,0 +1,29 @@
+{% extends "layout/layout.html" %}
+
+{% block title %} 
+아이디 찾기
+{% endblock %}
+
+{% block content %}
+<div class = "container">
+<form class="form-horizontal" action="{% url 'find_id' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="inputId" class="col-lg-2 control-label">Tel</label>
+            <div class="col-lg-10">
+                <input type="tel" class="form-control onlyAlphabetAndNumber" data-rule-required="true" placeholder="010-1234-5679" name="tel">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% if find_ids %}
+<h1>{{find_ids}}</h1>
+{% endif %}
+</div>
+{% endblock %}

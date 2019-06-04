@@ -1,34 +1,83 @@
 <!-- 레이아웃을 받아옵니다. -->
-{% extends "layout/layout.html" %}
+{% extends "search/layout.html" %}
 
-{% block title %} 
-검색창입니다.
-{% endblock %}
+{% block searchContent %}
 
-{% block content %}
-
-    <!-- 에러메시지를 출력합니다. -->
-    {% if errorMsg %}
-    <div class="alert alert-{{erroType}}" role="alert">
-        {{ errorMsg }}
-    </div>
-    {% endif %}
-
-    <!-- 검색바입니다. -->
-    <nav class="navbar navbar-light bg-light">
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </nav>
     <!-- 결과창입니다. -->
     <div class="jumbotron">
-        <h1 class="display-4">Hello, world!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component
-            for calling extra attention to featured content or information.</p>
+        <h1 class="display-4">{{restaurant}}</h1><hr>
+        <h3>
+            <span class="badge badge-secondary">{{restaurant.rtype_name}}</span>, 
+            <span class="badge badge-secondary">조회수 : {{restaurant.cnt}}</span>, 
+            <span class="badge badge-secondary">평균평점 : {{rateAvg}}</span>
+        </h3><hr>
+        <div class="alert alert-light" role="alert">
+            <h3>메뉴판</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">이름</th>
+                    <th scope="col">가격</th>
+                    <th scope="col">#tag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in menu %}
+                    <tr>
+                        <td>{{m.name}}</td>
+                        <td>{{m.price}}</td>
+                        <td>
+                            {% for k,v in types %}
+                            {% if k == m.name %}
+                            {% for i in v%}
+                            <span class="badge badge-secondary" style="font-size: 1em">
+                                #{{ i.food_type }}
+                            </span>&nbsp;
+                            {% endfor %}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="lead"><h4>상세주소 : </h4>{{restaurant.si}} {{restaurant.gu}} {{restaurant.address}}</p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out
-            within the larger container.</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        <p>this is project for database programming. made by younghwan, seungchul, youngbin</p>
+        {% if request.session.member_id %} <!-- login 성공시 표출 -->
+        <a class="btn btn-primary btn-lg" href="/search/favorite/{{restaurant.restid}}/" role="button">즐겨찾기 추가</a>
+        <button class="btn btn-success btn-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            평점남기기
+        </button>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form action="{% url 'addRate' %}">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio1" class="custom-control-input" value="1.0" name="rate">
+                        <label class="custom-control-label" for="radio1">★</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio2" class="custom-control-input" value="2.0" name="rate">
+                        <label class="custom-control-label" for="radio2">★★</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio3" class="custom-control-input" value="3.0" name="rate">
+                        <label class="custom-control-label" for="radio3">★★★</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio4" class="custom-control-input" value="4.0" name="rate">
+                        <label class="custom-control-label" for="radio4">★★★★</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio5" class="custom-control-input" value="5.0" name="rate">
+                        <label class="custom-control-label" for="radio5">★★★★★</label>
+                    </div>
+                    <input type="hidden" value="{{restaurant.restid}}" name="restid">
+                    <button type="submit" class="btn btn-primary">제출</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}

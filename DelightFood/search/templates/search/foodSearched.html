@@ -1,0 +1,41 @@
+<!-- 레이아웃을 받아옵니다. -->
+{% extends "search/layout.html" %}
+
+{% block searchContent %}
+<!-- 결과창입니다. -->
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">식당이름</th>
+            <th scope="col">메뉴이름</th>
+            <th scope="col">음식타입</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contact in contacts %}
+        <tr>
+            <td>{{contact.1}}</td>
+            <td><a href="/search/result/{{contact.3}}/"><div>{{contact.0}}</div></a></td>
+            <td>{{contact.2}}</td>
+        </tr>   
+        {% endfor %}
+    </tbody>
+</table>
+<div class="pagination justify-content-center">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+            <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

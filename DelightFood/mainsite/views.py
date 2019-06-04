@@ -1,7 +1,9 @@
+from .models import *
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
-from .models import *
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import connection
 
 # Create your views here.
 
@@ -30,7 +32,10 @@ def main(request):
         # erroType : error 메시지면 danger, 성공 메시지면 success
         # errorMsg : 화면에 출력할 결과메시지
         context = readErroMsg(request)
-        
+        if request.session.get('member_id', False):
+            favors = Favourite.objects.filter(userid=request.session['member_id'])
+            context['favors'] = favors
+            print("="*30, favors)
     except:
         # error검출하기 위함입니다.
         erroType = 'danger'
@@ -53,12 +58,14 @@ def register(request):
 
 def register_fuc(request):
     try:
-        Member.objects.create(
-            userId = request.POST.get('userId'),
-            pw = request.POST.get('pw')
+        UserInfo.objects.create(
+            userid = request.POST.get('userid'),
+            pw = request.POST.get('pw'),
+            tel = request.POST.get('tel'),
+            email = request.POST.get('email')
         )
-        m = Member.objects.get(userId=request.POST['userId'])
-        request.session['member_id'] = m.id
+        m = UserInfo.objects.get(userid=request.POST['userid'])
+        request.session['member_id'] = m.userid
         setErroMsg(request, False, "Thank you for signing up!!")
         return redirect('home')
     except:
@@ -70,9 +77,9 @@ def register_fuc(request):
 
 def login(request):
     try:
-        m = UserInfo.objects.get(userId=request.POST['userId'])
+        m = UserInfo.objects.get(userid=request.POST['userid'])
         if m.pw == request.POST['pw']:
-            request.session['member_id'] = m.id
+            request.session['member_id'] = m.userid
             setErroMsg(request, False, "Login success!!")
             return redirect('home')
         else:
@@ -89,3 +96,38 @@ def logout(request):
     except KeyError:
         pass
     return redirect('home')
+
+def forgot(request) :
+    if request.POST.get('findpwd') :
+        return render(request, "mainsite/forgotpage.html")
+    else :
+        return render(request, "mainsite/findid.html")
+
+def findpwd(request) :
+    if request.method == "POST" and request.POST.get('tel') :
+        connection.cursor()
+        rawCursor = connection.connection.cursor()
+        u_tel = request.POST.get('tel')
+        u_id = request.POST.get('userid')
+        try :
+            find_pwds = rawCursor.callfunc("userpwdfind", str, [u_tel, u_id])
+        finally :
+            rawCursor.close()
+        context = {'find_pwds' : find_pwds}
+        return render(request, 'mainsite/forgotpage.html', context)
+    else :
+        return render(request, 'mainsite/forgotpage.html')
+
+def findid(request) :
+    if request.method == "POST" and request.POST.get('tel') :
+        connection.cursor()
+        rawCursor = connection.connection.cursor()
+        u_tel = request.POST.get('tel')
+        try :
+            find_ids = rawCursor.callfunc("useridfind", str, [u_tel])
+        finally :
+            rawCursor.close()
+        context = {'find_ids' : find_ids}
+        return render(request, 'mainsite/findid.html', context)
+    else :
+        return render(request, 'mainsite/findid.html')
